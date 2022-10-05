@@ -1,1 +1,3 @@
---- {}
+---
+ipacerts::certdir: '/etc/ipa/3rdparty_certs'
+ipacerts::trustargs: 'CT,C,C'

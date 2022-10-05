@@ -16,19 +16,7 @@
       ]
     },
     {
-      "operatingsystem": "OracleLinux",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
-    {
       "operatingsystem": "RedHat",
-      "operatingsystemrelease": [
-        "8"
-      ]
-    },
-    {
-      "operatingsystem": "Scientific",
       "operatingsystemrelease": [
         "7"
       ]
@@ -38,6 +26,9 @@
     {
       "name": "puppet",
       "version_requirement": ">= 6.21.0 < 8.0.0"
+    },
+    { "name": "puppet-openssl",
+        "version_requirement": ">= 2.0.1"
     }
   ],
   "pdk-version": "2.3.0",
