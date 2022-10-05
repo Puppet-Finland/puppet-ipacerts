@@ -3,28 +3,18 @@
 #
 class ipacerts::install_key_and_cert {
   assert_private()
-
-  $targetbundle="${ipacerts::certdir}/ca-bundle.pem"
-
-  # create a the cert and files bundle then in the right order
-  concat { $targetbundle:
-    ensure  => present,
-    require => Exec["Ensure ${ipacerts::certdir} exists"]
-  }
-
-  $ipacerts::chainhash.keys.sort.each | $key | {
-    unless $ipacerts::chainhash[$key] =~ Stdlib::Filesource {
-      fail(sprintf('This value cannot be a source of a file resource: %s', $ipacerts::chainhash[$key]))
-    }
-    $filename=$ipacerts::chainhash[$key].split(/\//)[-1]
-    file { "${ipacerts::certdir}/$filename":
-      ensure => 'present',
-      source => $ipacerts::chainhash[$key],
-    }
-    concat::fragment { "$filename-$key":
-      target => $targetbundle,
-      source => "${ipacerts::certdir}/${filename}",
-      order  => $key,
-    }
+  
+  file { "Server cert and key":
+    default:
+      owner => 'root',
+      group => 'root',
+      mode  => '0400',
+      ;
+    $keyfile:
+      source => $ipacerts::keyfile,
+      ;
+    $certfile:
+      source => $ipacerts::certfile,
+      ;
   }
 }

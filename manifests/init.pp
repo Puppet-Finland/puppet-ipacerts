@@ -5,6 +5,7 @@
 #  A hash with alphabetically sorted keys of 
 #  valid file uris to retrieve 
 #  CA certificates in correct order
+#
 #  example:
 # 
 # $chainhash = {
@@ -13,13 +14,13 @@
 #  'a' => 'file:///path/cert1.crt'
 # }
 class ipacerts (
-  Array $chainhash,
+  Hash $chainhash,
   Stdlib::Absolutepath $certdir,
   String $trustargs,
   String $admin_password,
-  String $domain,
-  String $private_key_source,
-  String $server_crt_source,
+  Stdlib::Fqdn $domain,
+  Stdlib::Filesource $private_key_source,
+  Stdlib::Filesource $server_crt_source,
 ) {
 
   unless $facts['os']['family'] == 'RedHat' {
@@ -30,6 +31,9 @@ class ipacerts (
 
   # ensure krb domain is in upcase
   $_domain=$domain.upcase
+
+  $keyfile="${ipacerts::certdir}/keyfile.pem"
+  $certfile="${ipacerts::certdir}/certfile.pem"
 
   # ensure we have a ticket to do our things
   $password=Sensitive($admin_password)
