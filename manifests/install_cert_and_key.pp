@@ -3,8 +3,11 @@
 #
 class ipacerts::install_cert_and_key {
   assert_private()
-  
-  file { "Server cert and key":
+
+  $keyfile="${ipacerts::certdir}/keyfile.pem"
+  $certfile="${ipacerts::certdir}/certfile.pem"
+
+  file {
     default:
       owner => 'root',
       group => 'root',

@@ -35,9 +35,6 @@ class ipacerts (
   # ensure krb domain is in upcase
   $_domain=$domain.upcase
 
-  $keyfile="${ipacerts::certdir}/keyfile.pem"
-  $certfile="${ipacerts::certdir}/certfile.pem"
-
   # ensure we have a ticket to do our things
   $password=Sensitive($admin_password)
   $get_ticket=Sensitive.new("/bin/echo ${passwd.unwrap} | /bin/kinit admin@${_domain}")
