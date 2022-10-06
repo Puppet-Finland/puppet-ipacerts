@@ -1,7 +1,7 @@
 #
 # @Summary Ensure the private key and server cert are in place
 #
-class ipacerts::install_key_and_cert {
+class ipacerts::install_cert_and_key {
   assert_private()
   
   file { "Server cert and key":
