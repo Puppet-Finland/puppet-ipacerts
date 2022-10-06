@@ -14,10 +14,10 @@ class ipacerts::install_cert_and_key {
       mode  => '0400',
       ;
     $keyfile:
-      source => $ipacerts::keyfile,
+      source => $ipacerts::private_key_source,
       ;
     $certfile:
-      source => $ipacerts::certfile,
+      source => $ipacerts::server_crt_source,
       ;
   }
 }
