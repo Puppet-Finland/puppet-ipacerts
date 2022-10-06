@@ -47,7 +47,7 @@ class ipacerts (
   }
 
   exec { "Ensure ${certdir} exists":
-    command => "mkdir -p ${certdir}",
+    command => "/usr/bin/mkdir -p ${certdir}",
     creates => $certdir,
   }
 
