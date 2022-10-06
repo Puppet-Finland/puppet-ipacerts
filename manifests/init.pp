@@ -21,13 +21,16 @@ class ipacerts (
   Stdlib::Fqdn $domain,
   Stdlib::Filesource $private_key_source,
   Stdlib::Filesource $server_crt_source,
+  Boolean $include_openssl,
 ) {
 
   unless $facts['os']['family'] == 'RedHat' {
     fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only supports osfamily Redhat")
   }
 
-  include ::openssl
+  if $include_openssl {
+    include ::openssl
+  }
 
   # ensure krb domain is in upcase
   $_domain=$domain.upcase
