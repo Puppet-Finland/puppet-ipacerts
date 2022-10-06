@@ -1,4 +1,4 @@
 ---
 ipacerts::certdir: '/etc/ipa/3rdparty_certs'
 ipacerts::trustargs: 'CT,C,C'
-include_openssl: true
+ipacerts::include_openssl: true
