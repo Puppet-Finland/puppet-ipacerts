@@ -18,14 +18,14 @@ class ipacerts::install_cacerts {
     }
     $filename=$ipacerts::chainhash[$key].split(/\//)[-1]
     notify { sprintf('finame now: %s', $filename): }
-    file { "${ipacerts::certdir}/{$filename}":
+    file { "${ipacerts::certdir}/${filename}":
       ensure => 'present',
       source => $ipacerts::chainhash[$key],
     }
-#    concat::fragment { "{$filename}-{$key}":
-#      target => $targetbundle,
-#      source => "${ipacerts::certdir}/${filename}",
-#      order  => $key,
-#    }
+    concat::fragment { "{$filename}-{$key}":
+      target => $targetbundle,
+      source => "${ipacerts::certdir}/${filename}",
+      order  => $key,
+    }
   }
 }
