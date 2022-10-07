@@ -17,14 +17,14 @@ class ipacerts::install_cacerts {
       fail(sprintf('This value cannot be a source of a file resource: %s', $ipacerts::chainhash[$key]))
     }
     $filename=$ipacerts::chainhash[$key].split(/\//)[-1]
-    file { "${ipacerts::certdir}/{$filename}":
+    file { ${ipacerts::certdir}/{$filename}:
       ensure => 'present',
       source => $ipacerts::chainhash[$key],
     }
-    concat::fragment { "{$filename}-{$key}":
-      target => $targetbundle,
-      source => "${ipacerts::certdir}/${filename}",
-      order  => $key,
-    }
+#    concat::fragment { "{$filename}-{$key}":
+#      target => $targetbundle,
+#      source => "${ipacerts::certdir}/${filename}",
+#      order  => $key,
+#    }
   }
 }

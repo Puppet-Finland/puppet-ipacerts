@@ -15,7 +15,7 @@ class ipacerts::initialize {
     include ::openssl
   }
 
-  # ensure krb domain is in upcase
+  # ensure krb domain is in uppercase
   $_ipa_domain=$ipacerts::ipa_domain.upcase
 
   # ensure we have a ticket to do our things
