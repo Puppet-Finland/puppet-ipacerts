@@ -13,6 +13,12 @@ class ipacerts::install_cacerts {
     require => Exec["Ensure ${ipacerts::certdir} exists"]
   }
 
+  concat::fragment { 'newline':
+    target  => $targetbundle,
+    content => '\n',
+    order   => '01'
+  }
+
   $ipacerts::chainhash.keys.sort.each | $key | {
     unless $ipacerts::chainhash[$key] =~ Stdlib::Filesource {
       fail(sprintf('This value cannot be a source of a file resource: %s', $ipacerts::chainhash[$key]))
