@@ -9,6 +9,7 @@ class ipacerts::install_cacerts {
   # create a the cert and files bundle then in the right order
   concat { $targetbundle:
     ensure  => present,
+    content => '\n'
     require => Exec["Ensure ${ipacerts::certdir} exists"]
   }
 
