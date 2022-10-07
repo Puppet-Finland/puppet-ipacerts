@@ -17,10 +17,7 @@ class ipacerts::initialize {
 
   # ensure krb domain is in uppercase
   $_ipa_domain=$ipacerts::ipa_domain.upcase
-
-  # ensure we have a ticket to do our things
-  $_password=Sensitive($ipacerts::admin_password)
-  $get_ticket=Sensitive.new("/bin/echo ${_password}.unwrap | /bin/kinit admin@${_ipa_domain}")
+  $get_ticket=Sensitive.new("/bin/echo ${ipacerts::admin_password} | /bin/kinit admin@${_ipa_domain}")
 
   exec { 'krb_ticket':
     command   => $get_ticket,
