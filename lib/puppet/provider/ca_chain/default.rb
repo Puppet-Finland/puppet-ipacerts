@@ -1,5 +1,4 @@
 Puppet::Type.type(:ca_chain).provide(:ruby) do
-
   require 'fileutils'
   require 'net/http'
   require 'uri'
@@ -7,10 +6,7 @@ Puppet::Type.type(:ca_chain).provide(:ruby) do
   confine :kernel => :linux
 
   def exists?
-    begin
-      File.exist?(resource[:file])
-    rescue Puppet::ExecutionFailure => e
-      false
+    File.exist?(resource[:file]) || false
     end
   end
 
@@ -33,5 +29,4 @@ Puppet::Type.type(:ca_chain).provide(:ruby) do
   def destroy
     File.delete(resource[:file]) if File.exist?(resource[:file])
   end
-
 end

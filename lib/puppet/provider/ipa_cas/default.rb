@@ -1,5 +1,4 @@
 Puppet::Type.type(:ipa_cas).provide(:ruby) do
-
   require 'fileutils'
   require 'net/http'
   require 'uri'
@@ -7,12 +6,14 @@ Puppet::Type.type(:ipa_cas).provide(:ruby) do
   confine :kernel => :linux
 
   def exists?
+    nil
   end
 
   def create
-  end
-  
-  def destroy
+    nil
   end
 
+  def destroy
+    nil
+  end
 end
