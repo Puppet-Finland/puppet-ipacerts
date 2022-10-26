@@ -11,7 +11,7 @@ class ipacerts::install_cacerts {
     sourcehash => $ipacerts::chainhash,
   }
 
-  $ipacerts::chainhash.keys.each | String $key | {
+  $ipacerts::chainhash.keys.each | $key | {
     unless $ipacerts::chainhash[$key] =~ Stdlib::Filesource {
       fail(sprintf('This value cannot be a source of a file resource: %s', $ipacerts::chainhash[$key]))
     }
