@@ -11,8 +11,8 @@ class ipacerts::config {
   # Add the cas to ipa and apache nss databases
   # NOTE: the order is critical in your sourcehash
   ipa_cas { $ipacerts::sourcehash:
-    ensure => 'present',
-    source => $ipacerts::sourcehash,
+    ensure     => 'present',
+    sourcehash => $ipacerts::sourcehash,
    }
 
    # Add the sertificate and the key to the nss database
