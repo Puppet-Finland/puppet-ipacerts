@@ -4,8 +4,8 @@
 class ipacerts::install_cert_and_key {
   assert_private()
 
-  $keyfile="${ipacerts::certdir}/keyfile.pem"
-  $certfile="${ipacerts::certdir}/certfile.pem"
+  $keyfile="${ipacerts::certdir}/${ipacerts::keyname}"
+  $certfile="${ipacerts::certdir}/${ipacerts::certname}"
 
   file {
     default:

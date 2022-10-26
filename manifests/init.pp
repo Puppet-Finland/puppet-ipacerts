@@ -22,6 +22,9 @@ class ipacerts (
   Stdlib::Filesource $private_key_source,
   Stdlib::Filesource $server_crt_source,
   Boolean $include_openssl,
+  String $certname = 'cert.pem',
+  String $keyname = 'key.pem',
+  String $bundlename = 'ca-bundle.pem'
 ) {
 
   contain 'ipacerts::initialize'
@@ -35,4 +38,7 @@ class ipacerts (
   -> Class['ipacerts::install_cert_and_key']
   -> Class['ipacerts::validate']
   -> Class['ipacerts::config']
+
+  Class['ipacerts::install_cacerts']~>Class['ipacerts::validate']
+  Class['ipacerts::install_cert_and_key']~>Class['ipacerts::validate']
 }

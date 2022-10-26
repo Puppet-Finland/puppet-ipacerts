@@ -4,7 +4,7 @@
 class ipacerts::install_cacerts {
   assert_private()
   
-  $targetbundle="${ipacerts::certdir}/ca-bundle.pem"
+  $targetbundle="${ipacerts::certdir}/${ipacerts::bundlename}"
 
   ca_chain { $targetbundle:
     ensure => 'present',
