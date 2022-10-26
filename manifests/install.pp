@@ -3,7 +3,7 @@
 #
 class ipacerts::install {
   assert_private()
-  
+
   $targetbundle="${ipacerts::certdir}/${ipacerts::bundlename}"
   $keyfile="${ipacerts::certdir}/${ipacerts::keyname}"
   $certfile="${ipacerts::certdir}/${ipacerts::certname}"
@@ -40,7 +40,7 @@ class ipacerts::install {
 
   $validate_chain_and_cert="/bin/openssl verify -verbose -CAfile ${targetbundle} ${certfile}"
   $key_md5="\"$(/bin/openssl rsa -noout -modulus -in ${keyfile} | /bin/openssl md5)\""
-  $cert_md5="\"$(openssl x509 -noout -modulus -in ${certfile} | /bin/openssl md5)\"" 
+  $cert_md5="\"$(openssl x509 -noout -modulus -in ${certfile} | /bin/openssl md5)\""
   $validate_cert_and_key="/bin/test ${key_md5} == ${cert_md5}"
 
   exec { 'Validate chain and certificate':
