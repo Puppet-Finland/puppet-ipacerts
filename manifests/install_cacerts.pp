@@ -1,24 +1,17 @@
 #
-# @Summary Ensure all certificates are in place
+# @Summary Ensure all CA certificates are in place
 #
 class ipacerts::install_cacerts {
   assert_private()
-
+  
   $targetbundle="${ipacerts::certdir}/ca-bundle.pem"
 
-  # create a the cert and files bundle then in the right order
-  concat { $targetbundle:
-    ensure  => present,
-    require => Exec["Ensure ${ipacerts::certdir} exists"]
+  ca_chain { $targetbundle:
+    ensure => 'present',
+    sourcehash => $ipacerts::chainhash,
   }
 
-  concat::fragment { 'newline':
-    target  => $targetbundle,
-    content => '\n',
-    order   => '01'
-  }
-
-  $ipacerts::chainhash.keys.sort.each | $key | {
+  $ipacerts::chainhash.keys.each | String $key | {
     unless $ipacerts::chainhash[$key] =~ Stdlib::Filesource {
       fail(sprintf('This value cannot be a source of a file resource: %s', $ipacerts::chainhash[$key]))
     }
@@ -27,10 +20,5 @@ class ipacerts::install_cacerts {
       ensure => 'present',
       source => $ipacerts::chainhash[$key],
     }
-    concat::fragment { "${filename}-${key}":
-      target => $targetbundle,
-      source => "${ipacerts::certdir}/${filename}",
-      order  => $key,
-    }
-  }
+  }  
 }
