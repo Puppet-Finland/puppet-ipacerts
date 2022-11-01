@@ -6,15 +6,18 @@ class ipacerts::config {
 
   # XXX: in progress
 
+  # Add the CAs to ipa and apache nss databases
+  # At this point we already have the files 
+  # NOTE: the order is critical in your sourcehash
+  ipa_cas { 'Configure the CAs':
+    ensure       => 'present',
+    certdir      => $ipacerts::certdir,
+    sourcehash   => $ipacerts::chainhash,
+    nickname     => 'subject',
+  }
+
   /*  
   
-  # Add the cas to ipa and apache nss databases
-  # NOTE: the order is critical in your sourcehash
-  ipa_cas { $ipacerts::sourcehash:
-    ensure     => 'present',
-    sourcehash => $ipacerts::sourcehash,
-   }
-
    # Add the sertificate and the key to the nss database
    webui_cert_and_key { 'wildcard.openvpn.in':
      ensure      => 'present',

@@ -7,7 +7,6 @@ Puppet::Type.type(:ca_chain).provide(:ruby) do
 
   def exists?
     File.exist?(resource[:file]) || false
-    end
   end
 
   def create
