@@ -21,7 +21,8 @@ Puppet::Type.type(:ipa_ca).provide(:ruby) do
     # /etc/pki/pki-tomcat/alias/
     # /etc/dirsrv/slapd-VLAB-OPENVPN-IN/
     # /etc/httpd/alias/
-    # Just checking one of these is enough 
+    # Just checking one of these is enough
+    #file_exists?(resource[:file]) and get_nickname(resource[:file], resource[:nickname_by])
     nickname = get_nickname(resource[:file], resource[:nickname_by])
     file_exists?(resource[:file]) and match_nickname(nickname)
   end
