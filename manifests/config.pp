@@ -9,11 +9,15 @@ class ipacerts::config {
   # Add the CAs to ipa and apache nss databases
   # At this point we already have the files 
   # NOTE: the order is critical in your sourcehash
-  ipa_cas { 'Configure the CAs':
-    ensure       => 'present',
-    certdir      => $ipacerts::certdir,
-    sourcehash   => $ipacerts::chainhash,
-    nickname     => 'subject',
+  $key=Integer.new(1)
+  $filename=$ipacerts::chainhash[$key].split(/\//)[-1]
+  notify { "file is going to be: ${ipacerts::certdir}/${filename}": }
+  ipa_ca { "${ipacerts::certdir}/${filaname}":
+    ensure      => 'present',
+    order       => $key,
+    file        => "${ipacerts::certdir}/${filename}",
+    nickname_by => 'subject',
+    trustargs   => $ipacerts::trustargs,
   }
 
   /*  
