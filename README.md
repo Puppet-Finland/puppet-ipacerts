@@ -8,14 +8,16 @@ A module for managing 3rd party certificates for FreeIPA.
 
 Define a hash, like
 
+```
 1: 'https://www.tbs-x509.com/Comodo_AAA_Certificate_Services.crt'
 2: 'https://www.tbs-x509.com/USERTrustRSAAAACertificateServices.crt'
 3: 'https://comodo.tbs-certificats.com/SectigoRSADomainValidationSecureServerCA.crt'
+```
+Note: The order is critically important. Define it in order from root CA to intermediates to the end-of-chain.
 
-Note: The order is critically important. Define it in order from root CA to intermediates to the end-of-chain. 
+Then declare the class:
 
-Then 
-
+```
 class {'::ipacerts':
   chainhash                  => $mychainhash,
   admin_password             => 'changeme',
@@ -24,7 +26,7 @@ class {'::ipacerts':
   server_crt_source          => 'puppet:///files/my.crt',
   cert_nickname              => 'myipa.example.com',
 }
-
+```
 See manifests/init for more parameters and data/common.yaml for defaults.
 
 ### Requirements
@@ -34,4 +36,3 @@ This module depends on easy_ipa modules and is meant to supplement it.
 ## Limitations
 
 Many for now.
-
