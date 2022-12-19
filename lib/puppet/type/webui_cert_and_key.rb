@@ -1,5 +1,6 @@
-# coding: utf-8
+# frozen_string_literal: true
 
+# Manage ipa webui keys and certs
 module Puppet
   Type.newtype(:webui_cert_and_key) do
     @doc = 'Manage 3rd party cert and key for IPA webui'
@@ -9,7 +10,7 @@ module Puppet
       newvalue(:present) do
         provider.create
       end
-      
+
       newvalue(:absent) do
         provider.destroy
       end
@@ -23,7 +24,7 @@ module Puppet
         raise('%s is not an string' % value) unless value.is_a?(String)
       end
     end
-    
+
     newparam(:keyfile) do
       desc 'Filepath for the key'
       validate do |value|

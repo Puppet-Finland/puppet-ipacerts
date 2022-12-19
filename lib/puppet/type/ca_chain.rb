@@ -1,13 +1,12 @@
 # coding: utf-8
 
-#require 'pathname'
+# require 'pathname'
 
 Puppet::Type.newtype(:ca_chain) do
-
   @doc = 'Manage certificate bundle file'
   ensurable
 
-  newparam(:file, :namevar => true) do
+  newparam(:file, namevar: true) do
     desc 'Destination bundle file'
     validate do |value|
       raise('file must be a valid absolute path') unless Puppet::Util.absolute_path?(value)
