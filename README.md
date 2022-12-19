@@ -22,8 +22,8 @@ class {'::ipacerts':
   chainhash                  => $mychainhash,
   admin_password             => 'changeme',
   ipa_domain                 => 'MYIPA.EXAMPLE.COM',
-  private_key_source         => puppet:///files/my.key',
-  server_crt_source          => 'puppet:///files/my.crt',
+  private_key_source         => puppet:///files/my.key,
+  server_crt_source          => puppet:///files/my.crt,
   cert_nickname              => 'myipa.example.com',
 }
 ```
@@ -36,3 +36,9 @@ This module depends on easy_ipa modules and is meant to supplement it.
 ## Limitations
 
 Many for now.
+
+## TODO
+
+* create RSPEC tests
+* Allow multiple CA certificate chains and certificate/key pairs (with defines)
+* Better documentation
