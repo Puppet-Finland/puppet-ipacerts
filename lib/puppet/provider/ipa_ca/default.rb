@@ -22,7 +22,6 @@ Puppet::Type.type(:ipa_ca).provide(:ruby) do
     found = false
     cmd='/sbin/ipa-cacert-manage -q list'
     stdout, stderr, status = Open3.capture3(cmd)
-    Puppet.debug(stdout.include?(nickname) ? found = true : found = false)
     stdout.include?(nickname) ? found = true : found = false
   end
 
@@ -47,48 +46,34 @@ Puppet::Type.type(:ipa_ca).provide(:ruby) do
     File.file?(file)
   end
   
-  def ipa_update()
-    Puppet.debug('in update_ipa')
-    Open3.popen3(ipa_certupdate('-v')) do | stdin, stdout, stderr, wait_thr |
-      pid = wait_thr.pid
-      exit_status = wait_thr.value
-    end
-  end
-
   def remove_nickname(nickname, dirs, suffix)
     Puppet.debug("in remove_nickname")
     dirs.each do |dir| 
       # remove from nss databases
       if match_nickname_in_nss(nickname, dir)
         cmd = "/usr/bin/certutil -d #{dir} -D -n #{nickname}"
-        Open3.popen3(cmd) do | stdin, stdout, stderr, wait_thr |
-          pid = wait_thr.pid
-          exit_status = wait_thr.value
-        end
+        stdout, stderr, status = Open3.capture3(cmd)
       end
       # remove from the DIT
       cmd="ldapdelete -Y GSSAPI -Q cn=#{nickname},cn=certificates,cn=ipa,cn=etc,#{suffix}"
       if match_nickname_in_ldap(nickname, suffix)
-        Open3.popen3(cmd) do | stdin, stdout, stderr, wait_thr |
-          pid = wait_thr.pid
-          exit_status = wait_thr.value
-        end
-        ipa_update()
+        stdout, stderr, status = Open3.capture3(cmd)
       end
     end
   end
-  
+    
   def exists?
     Puppet.debug("in exists?")
     nickname = get_nickname(resource[:filepath])
-    file_exists?(resource[:filepath]) and match_nickname(nickname)
+    suffix='dc=vlab,dc=openvpn,dc=in'
+    Puppet.debug('Got: ' % match_nickname_in_ldap(nickname, suffix))
+    file_exists?(resource[:filepath]) and match_nickname_in_ldap(nickname, suffix)
   end
 
   def create
     Puppet.debug('in create')
     nickname = get_nickname(resource[:filepath])
     ipa_cacert_manage('install', '-n', nickname, '-t', resource[:trustargs], resource[:filepath])
-    ipa_update
   end
 
   def destroy
@@ -100,7 +85,8 @@ Puppet::Type.type(:ipa_ca).provide(:ruby) do
       '/etc/httpd/alias'
     ]
     nickname = get_nickname(resource[:filepath])
+    Puppet.debug(nickname)
     suffix='dc=vlab,dc=openvpn,dc=in'
-    remove_nickname(nickname, dirs, suffix)
+    match_nickname_in_ldap(nickname, suffix) and remove_nickname(nickname, dirs, suffix)
   end
 end

@@ -1,4 +1,5 @@
 # coding: utf-8
+
 module Puppet
   Type.newtype(:ipa_ca) do
 
@@ -44,7 +45,7 @@ module Puppet
       Puppet.debug(:trustargs)
       desc 'Trustargs'
       validate do |value|
-        raise("%s does not exist" % value) unless value.is_a?(String)
+        raise("%s is not a string" % value) unless value.is_a?(String)
       end
     end
   end

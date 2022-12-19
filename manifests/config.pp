@@ -4,71 +4,54 @@
 class ipacerts::config {
   assert_private()
 
-  # XXX: in progress
-
   # Add the CAs to ipa and apache nss databases
   # At this point we already have the files 
   # NOTE: the order is critical in your sourcehash
-  $key=Integer.new(1)
-  $filename=$ipacerts::chainhash[$key].split(/\//)[-1]
-  notify { "file is going to be: ${ipacerts::certdir}/${filename}": }
-  ipa_ca { "${ipacerts::certdir}/${filaname}":
-    ensure      => 'present',
-    order       => $key,
-    file        => "${ipacerts::certdir}/${filename}",
-    nickname_by => 'subject',
-    trustargs   => $ipacerts::trustargs,
+  $ipacerts::chainhash.keys.each | $key | {
+    $filename=$ipacerts::chainhash[$key].split(/\//)[-1]
+    ipa_ca { "${ipacerts::certdir}/${filename}":
+      ensure    => $ipacerts::ipa_ca_present,
+      order     => $key,
+      filepath  => "${ipacerts::certdir}/${filename}",
+      trustargs => $ipacerts::trustargs,
+      require   => Service['ipa'],
+      notify    => Exec['ipa certupdate'],
+    }
   }
 
-  /*  
-  
-   # Add the sertificate and the key to the nss database
-   webui_cert_and_key { 'wildcard.openvpn.in':
-     ensure      => 'present',
-     key_source  => "${ipacerts::certdir}/${ipacerts::keyname}",
-     cert_source => "${ipacerts::certdir}/${ipacerts::certname}",
-     nss_pwfile  =>  "${certdir}/nss-password.txt", 
-   }
-
-  exec { "add_cert_${title}":
-    path      => ['/usr/bin'],
-    command   => "certutil -d ${certdir} -A -n '${nickname}' -t '${trustargs}' -a -i ${cert}",
-    unless    => "certutil -d ${certdir} -L -n '${nickname}'",
-    logoutput => true,
-    require   => [
-      Nsstools::Create[$certdir],
-      Class['nsstools'],
-    ],
-  }
-  
-  exec {"generate_pkcs12_${title}":
-    command   => "/usr/bin/openssl pkcs12 -export -in ${cert} -inkey ${key} -password 'file:${certdir}/nss-password.txt' -out '${certdir}/${pkcs12_name}' -name '${nickname}'",
-    creates   => "${certdir}/${pkcs12_name}",
-    subscribe => File["${certdir}/nss-password.txt"],
-    require   => [
-      Nsstools::Create[$certdir],
-      Class['nsstools'],
-    ],
+  exec { 'ipa certupdate':
+    command     => '/sbin/ipa-certupdate -v',
+    refreshonly => true,
   }
 
-  exec { "add_pkcs12_${title}":
-    path      => ['/usr/bin'],
-    command   => "pk12util -d ${certdir} -i ${certdir}/${pkcs12_name} -w ${certdir}/nss-password.txt -k ${certdir}/nss-password.txt",
-    unless    => "certutil -d ${certdir} -L -n '${nickname}'",
-    logoutput => true,
-    require   => [
-      Exec["generate_pkcs12_${title}"],
-      Nsstools::Create[$certdir],
-      Class['nsstools'],
-    ],
+  webui_cert_and_key { $ipacerts::cert_nickname:
+    ensure   => $ipacerts::webui_cert_and_key_present,
+    keyfile  => "${ipacerts::certdir}/${ipacerts::keyname}",
+    certfile => "${ipacerts::certdir}/${ipacerts::certname}",
+    dir      => $ipacerts::mod_nss_dir,
+    nickname => $ipacerts::cert_nickname,
+    require  => Service['ipa'],
   }
 
+  $nickname = $ipacerts::webui_cert_and_key_present ? {
+    'present' => $ipacerts::cert_nickname,
+    'absent'  => 'Server-Cert',
+    default   => 'Server-Cert',
+  }
   file_line { 'Ensure cert nickname':
     path    => '/etc/httpd/conf.d/nss.conf',
     replace => true,
-    line    => 'NSSNickname wildcard.openvpn.in',
+    line    => "NSSNickname ${nickname}",
     match   => '^NSSNickname.*$',
-    notify  => Service['httpd'],
+    require =>  Webui_cert_and_key[$ipacerts::cert_nickname],
+    notify  => Exec['httpd reload'],
   }
- */
+
+  exec { 'httpd reload':
+    command     => '/bin/systemctl reload httpd',
+    logoutput   => on_failure,
+    refreshonly => true,
+  }
 }
+
+

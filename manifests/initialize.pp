@@ -11,6 +11,10 @@ class ipacerts::initialize {
     fail("Unsupported release: ${facts['os']['release']['major']}, only release 7 is supported")
   }
 
+  if ($ipacerts::webui_cert_and_key_present == 'present' and $ipacerts::ipa_ca_present == 'absent') {
+    fail('Webui certificate and key require the CA certificates')
+  }
+
   if $ipacerts::include_openssl {
     include ::openssl
   }
@@ -18,11 +22,10 @@ class ipacerts::initialize {
   # ensure krb domain is in uppercase
   $_ipa_domain=$ipacerts::ipa_domain.upcase
   $get_ticket=Sensitive.new("/bin/echo ${ipacerts::admin_password} | /bin/kinit admin@${_ipa_domain}")
-
   exec { 'krb_ticket':
     command   => $get_ticket,
     unless    => '/bin/klist -s',
-    logoutput => false,
+    logoutput => true,
     provider  => 'shell',
   }
 

@@ -8,11 +8,6 @@ class ipacerts::install {
   $keyfile="${ipacerts::certdir}/${ipacerts::keyname}"
   $certfile="${ipacerts::certdir}/${ipacerts::certname}"
 
-  ca_chain { $targetbundle:
-    ensure     => 'present',
-    sourcehash => $ipacerts::chainhash,
-  }
-
   $ipacerts::chainhash.keys.each | $key | {
     unless $ipacerts::chainhash[$key] =~ Stdlib::Filesource {
       fail(sprintf('This value cannot be a source of a file resource: %s', $ipacerts::chainhash[$key]))
@@ -22,6 +17,12 @@ class ipacerts::install {
       ensure => 'present',
       source => $ipacerts::chainhash[$key],
     }
+  }
+
+  ca_chain { $targetbundle:
+    ensure     => 'present',
+    sourcehash => $ipacerts::chainhash,
+    dir        => $ipacerts::certdir,
   }
 
   file {

@@ -22,9 +22,13 @@ class ipacerts (
   Stdlib::Filesource $private_key_source,
   Stdlib::Filesource $server_crt_source,
   Boolean $include_openssl,
-  String $certname = 'cert.pem',
-  String $keyname = 'key.pem',
-  String $bundlename = 'ca-bundle.pem'
+  String $certname,
+  String $keyname,
+  String $bundlename,
+  String $cert_nickname,
+  Stdlib::Absolutepath $mod_nss_dir,
+  String $ipa_ca_present,
+  String $webui_cert_and_key_present,
 ) {
 
   contain 'ipacerts::initialize'
@@ -33,5 +37,5 @@ class ipacerts (
 
   Class['ipacerts::initialize']
   -> Class['ipacerts::install']
-  -> Class['ipacerts::config']
+  ~> Class['ipacerts::config']
 }
