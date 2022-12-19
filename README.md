@@ -39,6 +39,6 @@ Many for now.
 
 ## TODO
 
-* create RSPEC tests
+* create rspec tests
 * Allow multiple CA certificate chains and certificate/key pairs (with defines)
 * Better documentation
