@@ -25,7 +25,7 @@ class {'::ipacerts':
   cert_nickname              => 'myipa.example.com',
 }
 ```
-See [init.pp](./manifest/init.pp) for more parameters and [common.yaml](./data/common.yaml) for defaults.
+See [init.pp](./manifests/init.pp) for more parameters and [common.yaml](./data/common.yaml) for defaults.
 
 ## Requirements
 
