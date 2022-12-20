@@ -35,8 +35,9 @@ This module depends on easy_ipa modules and is meant to supplement it.
 
 ## Limitations
 
-* Setting 
-Many for now. Minimally tested. I can think of many cases where it fails. Removing 
+* Ensuring that CA certs and Webui certs are absent when they are currently present does not work. ca_force_absent is a stupid workaround.
+* Minimally tested. I can think of many cases where it fails.
+* Many others
 
 ## TODO
 
