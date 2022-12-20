@@ -1,12 +1,10 @@
-# ipacerts
-
 ## Description
 
 A module for managing 3rd party certificates for FreeIPA.
 
 ## Setup
 
-Define a hash, like
+Define a hash in hiera:
 
 ```
 1: 'https://www.tbs-x509.com/Comodo_AAA_Certificate_Services.crt'
@@ -15,7 +13,7 @@ Define a hash, like
 ```
 Note: The order is critically important. Define it in order from root CA to intermediates to the end-of-chain.
 
-Then declare the class:
+Declare the class:
 
 ```
 class {'::ipacerts':
@@ -27,16 +25,16 @@ class {'::ipacerts':
   cert_nickname              => 'myipa.example.com',
 }
 ```
-See manifests/init for more parameters and data/common.yaml for defaults.
+See [init.pp](./manifest/init.pp) for more parameters and [common.yaml](./data/common.yaml) for defaults.
 
-### Requirements
+## Requirements
 
 This module depends on easy_ipa modules and is meant to supplement it.
 
 ## Limitations
 
 * Ensuring that CA certs and Webui certs are absent when they are currently present does not work. ca_force_absent is a stupid workaround.
-* Minimally tested. I can think of many cases where it fails.
+* Minimally tested.
 * Many others
 
 ## TODO
@@ -47,3 +45,4 @@ This module depends on easy_ipa modules and is meant to supplement it.
 * Certificate NSS nickames based on certificate subject
 * Change CAs, certificates and keys on the fly
 * Support removing/changing Webui and CA certificates at the same time
+* Manage case where one any of the CAs AND/OR the webui cert/key has been changed
