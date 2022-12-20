@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Puppet::Type.type(:webui_cert_and_key).provide(:ruby) do
-
   confine osfamily: :redhat
 
   def match_nickname_in_nss(dir, nickname)
