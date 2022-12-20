@@ -70,6 +70,12 @@
 # @param webui_cert_and_key_present
 #   Ensure certificate and private key for the WebUI.
 #   Default is 'present'.
+#
+# @param ca_force_absent
+#   Force removal of CA certs when both webui_cert_and_key_present
+#   and ipa_ca_present are set to absent.
+#   First set webui_cert_and_key_present absent, then also set ipa_ca_present
+#   absent AND ca_force_absent. This is stupid, I know.
 class ipacerts (
   Hash $chainhash,
   Stdlib::Absolutepath $certdir,
@@ -86,6 +92,7 @@ class ipacerts (
   Stdlib::Absolutepath $mod_nss_dir,
   String $ipa_ca_present,
   String $webui_cert_and_key_present,
+  Boolean $ca_force_absent,
 ) {
 
   contain 'ipacerts::initialize'

@@ -16,7 +16,9 @@ class ipacerts::initialize {
   }
 
   if ($ipacerts::webui_cert_and_key_present == 'absent' and $ipacerts::ipa_ca_present == 'absent') {
-    fail('Removing Webui certificate and CA certificates at the same time is not supported yet. Remove Webui cert first.')
+    unless $ipacerts::ca_force_absent == true {
+      fail('Ensuring absence for Webui and CA certificates at the same time is not supported yet. Remove Webui cert first and use $ca_force_absent.') # lint:ignore:140chars
+    }
   }
 
   if $ipacerts::include_openssl {

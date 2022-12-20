@@ -8,3 +8,4 @@ ipacerts::bundlename: 'ca-bundle.pem'
 ipacerts::mod_nss_dir: '/etc/httpd/alias'
 ipacerts::ipa_ca_present: present
 ipacerts::webui_cert_and_key_present: present
+ipacerts::ca_force_absent: false

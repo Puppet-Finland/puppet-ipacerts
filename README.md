@@ -35,7 +35,8 @@ This module depends on easy_ipa modules and is meant to supplement it.
 
 ## Limitations
 
-Many for now. Minimally tested. I can think of many cases where it fails.
+* Setting 
+Many for now. Minimally tested. I can think of many cases where it fails. Removing 
 
 ## TODO
 
