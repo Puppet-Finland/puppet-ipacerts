@@ -35,10 +35,13 @@ This module depends on easy_ipa modules and is meant to supplement it.
 
 ## Limitations
 
-Many for now.
+Many for now. Minimally tested. I can think of many cases where it fails.
 
 ## TODO
 
-* create rspec tests
+* Create rspec tests
 * Allow multiple CA certificate chains and certificate/key pairs (with defines)
 * Better documentation
+* Certificate NSS nickames based on certificate subject
+* Change CAs, certificates and keys on the fly
+* Support removing/changing Webui and CA certificates at the same time

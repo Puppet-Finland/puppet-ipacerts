@@ -9,8 +9,6 @@
 #    private_key_source         => $private_key_source,
 #    server_crt_source          => $server_crt_source,
 #    cert_nickname              => $cert_nickname,
-#    ipa_ca_present             => 'present',
-#    webui_cert_and_key_present => 'present',
 #  }
 #
 # @param chainhash
@@ -21,9 +19,9 @@
 #   example:
 # 
 #   $chainhash = {
-#     '3' => 'http://path/cert3.crt',
+#     '1' => 'http://path/cert3.crt',
 #     '2' => 'puppet:///files/cert2.crt',
-#     '1' => 'file:///path/cert1.crt'
+#     '3' => 'file:///path/cert1.crt'
 #   }
 #
 # @param trustargs

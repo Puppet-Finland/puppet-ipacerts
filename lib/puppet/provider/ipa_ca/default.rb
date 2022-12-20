@@ -42,10 +42,10 @@ Puppet::Type.type(:ipa_ca).provide(:ruby) do
       # remove from nss databases
       cmd = "/usr/bin/certutil -d #{dir} -D -n #{nickname}"
       Open3.capture3(cmd) if match_nickname_in_nss(nickname, dir)
-      # remove from the DIT
-      cmd = "ldapdelete -Y GSSAPI -Q cn=#{nickname},cn=certificates,cn=ipa,cn=etc,#{suffix}"
-      Open3.capture3(cmd) if match_nickname_in_ldap(nickname, suffix)
     end
+    # remove from the DIT
+    cmd = "ldapdelete -Y GSSAPI -Q cn=#{nickname},cn=certificates,cn=ipa,cn=etc,#{suffix}"
+    Open3.capture3(cmd) if match_nickname_in_ldap(nickname, suffix)
   end
 
   def exists?
@@ -56,7 +56,8 @@ Puppet::Type.type(:ipa_ca).provide(:ruby) do
 
   def create
     nickname = get_nickname(resource[:filepath])
-    ipa_cacert_manage('install', '-n', nickname, '-t', resource[:trustargs], resource[:filepath])
+    cmd = "/sbin/ipa-cacert-manage install -n #{nickname} -t #{resource[:trustargs]} #{resource[:filepath]}"
+    Open3.capture3(cmd)
   end
 
   def destroy

@@ -28,7 +28,10 @@
       "version_requirement": ">= 6.21.0 < 8.0.0"
     },
     { "name": "puppet-openssl",
-        "version_requirement": ">= 2.0.1"
+      "version_requirement": ">= 2.0.1"
+    },
+    { "name": "puppetfinland-easy_ipa",
+      "version_requirement": ">= 2.4.0"
     }
   ],
   "pdk-version": "2.3.0",

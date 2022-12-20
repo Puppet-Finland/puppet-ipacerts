@@ -15,6 +15,10 @@ class ipacerts::initialize {
     fail('Webui certificate and key require the CA certificates')
   }
 
+  if ($ipacerts::webui_cert_and_key_present == 'absent' and $ipacerts::ipa_ca_present == 'absent') {
+    fail('Removing Webui certificate and CA certificates at the same time is not supported yet. Remove Webui cert first.')
+  }
+
   if $ipacerts::include_openssl {
     include ::openssl
   }
