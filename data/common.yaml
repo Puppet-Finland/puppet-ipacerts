@@ -1,1 +1,10 @@
---- {}
+---
+ipacerts::certdir: '/etc/ipa/3rdparty_certs'
+ipacerts::trustargs: 'CT,C,C'
+ipacerts::include_openssl: false
+ipacerts::certname: 'cert.pem'
+ipacerts::keyname: 'key.pem'
+ipacerts::bundlename: 'ca-bundle.pem'
+ipacerts::mod_nss_dir: '/etc/httpd/alias'
+ipacerts::ipa_ca_present: present
+ipacerts::webui_cert_and_key_present: present
